@@ -26,7 +26,10 @@ inverted = cv2.bitwise_not(gray)
 blurred = cv2.GaussianBlur(inverted, (5, 5), 0)
 
 # threshold
-thresh = cv2.threshold(blurred, 140, 255, cv2.THRESH_BINARY)[1]
+thresh = cv2.threshold(blurred, 100, 255, cv2.THRESH_BINARY)[1]
+
+cv2.imshow("Threshold", thresh)
+cv2.waitKey(0)
 
 # find contours
 cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -39,7 +42,7 @@ for i, c in enumerate(cnts):
     rect = cv2.boundingRect(c)
     x, y, w, h = rect
     # # draw bounding box
-    # cv2.rectangle(image, (x, y), (x+w, y+h),(0, 255, 0), 2)
+    cv2.rectangle(image, (x, y), (x+w, y+h),(0, 255, 0), 2)
     elem = thresh[y:y+h, x:x+w]
     
     # convert to pillow image
@@ -55,9 +58,9 @@ for i, c in enumerate(cnts):
     X_test.append(x)
     # cv2.imwrite(out_dir + str(i) + '.png', elem)
 
-# # show the output image
-# cv2.imshow("Image", image)
-# cv2.waitKey(0)
+# show the output image
+cv2.imshow("Image", image)
+cv2.waitKey(0)
 
 X_test = np.array(X_test)
-pickle.dump(X_test, open("./data/test/X_test.p", "wb"))
+pickle.dump(X_test, open("./data/test/X_test_6.p", "wb"))
